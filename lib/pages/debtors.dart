@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:generate_rec/Db/receipt.dart';
 import 'package:generate_rec/Global/globals.dart';
 import 'package:generate_rec/models/DashModel.dart';
-import 'package:generate_rec/pages/receipt.dart';
 import 'package:generate_rec/widgets/Button.dart';
 import 'package:generate_rec/widgets/form_input.dart';
 import 'package:generate_rec/widgets/receiptCard.dart';
@@ -52,16 +51,20 @@ class _DebtorsState extends State<Debtors> {
                   )
                 : ListView.builder(
                     itemBuilder: (context, index) {
-                      if (dbList.isNotEmpty) {
-                        return ReceiptCard(
-                            tap: () => showSaveDialog(index),
-                            paid: dbList[index].amount,
-                            title: dbList[index].name);
-                      } else {
-                        return const Center(
-                          child: Text("No debtors"),
-                        );
-                      }
+                      return (dbList.isNotEmpty)
+                          ? ReceiptCard(
+                              tap: () => showUpdateDialog(index),
+                              paid: dbList[index].amount,
+                              title: dbList[index].name)
+                          : const Center(
+                              child: Text(
+                                "No debtors available",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            );
                     },
                     itemCount: dbList.length,
                   );
@@ -71,7 +74,7 @@ class _DebtorsState extends State<Debtors> {
     );
   }
 
-  showSaveDialog(int id) {
+  showUpdateDialog(int id) {
     showDialog(
         context: context,
         builder: (context) {

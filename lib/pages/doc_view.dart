@@ -5,10 +5,10 @@ import 'package:generate_rec/widgets/CommonView.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:generate_rec/widgets/Body.dart';
-import 'dart:math' as m;
+
+import '../Global/globals.dart';
+import '../widgets/pdf_widget.dart';
 
 class DocView extends StatefulWidget {
   final Receipt box;
@@ -26,12 +26,51 @@ class _DocViewState extends State<DocView> {
       pw.Page(
         pageFormat: format,
         build: (pw.Context context) => pw.Center(
-          child: pw.Text("Hi from pdf writer"),
+          child: pw.Column(
+            children: [
+              // pw.PdfLogo(),
+              // pw.SizedBox(height: 100),
+              PdfTile(name: "Customer name", value: widget.box.name),
+              pw.Divider(),
+              PdfTile(
+                value: widget.box.pdtName,
+                name: 'Product paid',
+              ),
+              pw.Divider(),
+              PdfTile(
+                value: widget.box.quantity,
+                name: 'Quantity',
+              ),
+              pw.Divider(),
+              PdfTile(
+                value: widget.box.amount,
+                name: 'Amount paid',
+              ),
+              pw.Divider(),
+              PdfTile(
+                value: widget.box.receiptDate,
+                name: 'Transaction Date',
+              ),
+              pw.Divider(),
+              PdfTile(
+                value: (widget.box.amount < costPrice)
+                    ? (widget.box.amount - costPrice)
+                    : "cleared",
+                name: 'Balance',
+              ),
+              pw.Divider(),
+              PdfTile(
+                value: widget.box.description,
+                name: 'Product description',
+              ),
+              pw.Divider()
+            ],
+          ),
         ),
       ),
     );
-    m.Random random = m.Random();
-    int id = random.nextInt(100);
+    // m.Random random = m.Random();
+    // int id = random.nextInt(100);
     // if (await Permission.storage.request().isGranted) {
     // getTemporaryDirectory().then((dir) async {
     //   showDialog(
@@ -53,8 +92,7 @@ class _DocViewState extends State<DocView> {
     return pdf.save();
   }
 
-/**
- * pw.Column(
+/* pw.Column(
             children: [
               // pw.PdfLogo(),
               // pw.SizedBox(height: 100),

@@ -30,7 +30,13 @@ class _SavedReceiptsState extends State<SavedReceipts> {
             if (box.isEmpty)
               // ignore: curly_braces_in_flow_control_structures
               return const Center(
-                child: Text("data"),
+                child: Text(
+                  "You no saved receipts yet",
+                  style: TextStyle(
+                    fontSize: 19,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
               );
             return FutureBuilder(
               future: Future.delayed(const Duration(seconds: 3)),
@@ -46,8 +52,8 @@ class _SavedReceiptsState extends State<SavedReceipts> {
                             title: data.name,
                             tap: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ReceiptView(index: index, box: data,receipts: box),
+                                builder: (context) => ReceiptView(
+                                    index: index, box: data, receipts: box),
                               ),
                             ),
                           );

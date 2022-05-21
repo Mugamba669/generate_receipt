@@ -1,16 +1,19 @@
-# generate_rec
-
-A new Flutter project.
+## Receipt Generator
+[![build status](https://api.codemagic.io/apps/6288af8cd44138e2fceba223/6288af8cd44138e2fceba222/status_badge.svg)](https://codemagic.io/apps/6288af8cd44138e2fceba223/6288af8cd44138e2fceba222/latest_build)
 
 ## Getting Started
+```
+  git clone https://github.com/Mugamba669/generate_receipt.git
+```
+## Then run
 
-This project is a starting point for a Flutter application.
+```
+   cd generate_receipt
+```
+```
+   flutter pub get
+```
+```
+   flutter run -v
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

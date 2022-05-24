@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:generate_rec/Db/receipt.dart';
+import 'package:generate_rec/Db/record.dart';
 import 'package:hive_flutter/adapters.dart';
 
 import 'Global/globals.dart';
@@ -21,7 +22,9 @@ void main() async {
   );
   await Hive.initFlutter();
   Hive.registerAdapter<Receipt>(ReceiptAdapter());
+  Hive.registerAdapter<Record>(RecordAdapter());
   await Hive.openBox<Receipt>(boxName);
+  await Hive.openBox<Record>(records);
   await SystemChrome.setPreferredOrientations(
           [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) => runApp(const MyApp()));
@@ -30,7 +33,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,9 +46,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const Splash(),
         '/dashboard': (context) => const Dashboard(),
-        '/newreceipt': (context) => const NewReceipt(),
         '/savedreceipts': (context) => const SavedReceipts(),
-        '/debtors': (context) => const Debtors(),
+        '/debtors': (context) =>  Debtors(),
         '/search': (context) => const Search()
       },
     );

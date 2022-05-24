@@ -12,7 +12,7 @@ class PdfTile extends pw.StatelessWidget {
   @override
   pw.Widget build(pw.Context context) {
     return pw.Padding(
-      padding: const pw.EdgeInsets.all(10.0),
+      padding: const pw.EdgeInsets.all(15.0),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [

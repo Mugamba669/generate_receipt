@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:generate_rec/models/DashModel.dart';
-import 'package:generate_rec/widgets/Body.dart';
 import 'package:generate_rec/widgets/CardTiles.dart';
+import 'package:generate_rec/widgets/CommonView.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../Db/receipt.dart';
+import '../Db/record.dart';
 import '../Global/globals.dart';
-import '../widgets/Space.dart';
+import 'debtors.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -55,58 +55,39 @@ List<DashModel> d = List.generate(
 );
 
 class _DashboardState extends State<Dashboard> {
-  Box<Receipt> box = Hive.box<Receipt>(boxName);
-  List<Receipt> list = [];
-  List<Receipt> dataList = [];
+  Box<Record> recs = Hive.box<Record>(records);
+  List<Record> list = [];
+  List<Record> debtors = [];
   @override
   void initState() {
     super.initState();
-    list = box.values.toList();
-    for (var element in list) {
-      if (element.amount < costPrice) {
-        dataList.add(element);
-      }
-    }
+     list = recs.values.toList();
+    // get number of debtors
+
+    debtors = list.where((element) => (element.totalPaid! < element.totalCostPrice!)).toList(growable: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Body(
-      appBar: AppBar(
-        title: const Text("Dashboard"),
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.refresh_rounded,
-                size: 24,
-              ))
-        ],
-      ),
-      fab: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed('/newreceipt');
-        },
-        label: const Text("New receipt"),
-      ),
+    return CommonView(
+      title: "Dashboard",
       child: ListView(
-        children: [
+        children:  [
           CardTiles(
             press: () {
               Navigator.of(context).pushNamed(d[0].route);
             },
             icon: d[0].icon,
-            total: box.values.length,
+            total: recs.values.length,
             color: d[0].color,
             title: d[0].title,
           ),
           CardTiles(
             press: () {
-              Navigator.of(context).pushNamed(d[1].route);
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Debtors(rec: debtors)));
             },
             icon: d[1].icon,
-            total: dataList.length,
+            total: debtors.length,
             color: d[1].color,
             title: d[1].title,
           )

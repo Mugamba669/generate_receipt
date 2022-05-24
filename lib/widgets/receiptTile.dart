@@ -12,24 +12,27 @@ class ReceiptTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            name,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w300,
+      child: SingleChildScrollView(
+        // scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              name,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w300,
+              ),
             ),
-          ),
-          Text(
-            (value is String) ? value : '$value',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w300,
+            Text(
+              (value is String) ? value : '$value',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w300,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

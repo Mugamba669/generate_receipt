@@ -5,6 +5,8 @@ import 'package:generate_rec/Db/receipt.dart';
 import 'package:generate_rec/Global/globals.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../Db/record.dart';
+
 class DashModel {
   String title;
   IconData icon;
@@ -19,7 +21,7 @@ class DashModel {
       });
 }
 
-Box<Receipt> box = Hive.box<Receipt>(boxName);
+Box<Record> box = Hive.box<Record>(records);
 List data = [
   {
     'title': "SAVED RECEIPTS",

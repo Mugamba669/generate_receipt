@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'fade_animation.dart';
+
 class Body extends StatefulWidget {
   Widget child;
   PreferredSizeWidget? appBar;
@@ -14,37 +16,34 @@ class Body extends StatefulWidget {
       this.drawer,
       this.appBar,
       this.scaffoldkey,
-      this.fab, Widget? box})
+      this.fab,
+      Widget? box})
       : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> {
+class _BodyState extends State<Body> with TickerProviderStateMixin {
+  late AnimationController controller;
+
+  @override
+  void initState() {
+    controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2000), value: 6);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: widget.scaffoldkey,
       appBar: widget.appBar,
       drawer: widget.drawer,
-      body: SafeArea(
+      body: BottomTopMoveAnimationView(
+        animationController: controller,
         child: Stack(
-          children: [
-            const Positioned(
-              child: Text(""),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              margin: EdgeInsets.zero,
-              padding: EdgeInsets.zero,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: widget.child,
-              ),
-            )
-          ],
+          children: [const Positioned(top: 10, child: Text("")), widget.child],
         ),
       ),
       floatingActionButton: widget.fab,

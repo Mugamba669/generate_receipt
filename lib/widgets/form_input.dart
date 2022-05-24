@@ -9,10 +9,12 @@ class FormInput extends StatelessWidget {
   TextInputAction? inputAction;
   ValueChanged<String> input;
   TextInputType? inputType;
+  bool focus;
   FormInput(
       {Key? key,
       this.controller,
       required this.input,
+      this.focus = false,
       this.inputAction = TextInputAction.next,
       this.inputType = TextInputType.text,
       this.prefixIcon,
@@ -37,8 +39,8 @@ class FormInput extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
       ),
       child: TextFormField(
+          autofocus: focus,
           onChanged: (value) => input(value),
-          
           validator: (value) =>
               value!.isNotEmpty ? null : "This field is required ..",
           controller: controller,

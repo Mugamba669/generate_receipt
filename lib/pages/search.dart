@@ -15,7 +15,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  List receipt = List<Receipt>.empty(growable: true);
+
   String results = "";
   @override
   Widget build(BuildContext context) {

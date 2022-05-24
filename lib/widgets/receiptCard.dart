@@ -1,14 +1,19 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-
-import '../Global/globals.dart';
+import 'package:generate_rec/Db/record.dart';
 
 class ReceiptCard extends StatelessWidget {
   String title;
-  double paid;
+  String? owner;
+  bool? paid;
   VoidCallback tap;
-  ReceiptCard({Key? key, required this.paid,required this.tap, required this.title})
+  ReceiptCard(
+      {Key? key,
+      this.paid = false,
+      this.owner = '',
+      required this.tap,
+      required this.title})
       : super(key: key);
 
   @override
@@ -18,21 +23,28 @@ class ReceiptCard extends StatelessWidget {
       child: Card(
         child: ListTile(
           onTap: () => tap(),
-          title: Text(title),
-          subtitle: (paid < costPrice)
-              ? Text('Balance: ${costPrice - paid}')
-              : const Text('Balance: no balance'),
+          title: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            'for $owner!',
+            style: TextStyle(
+              color: Colors.grey[500],
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
           trailing: Chip(
-            backgroundColor: (paid < costPrice)
-                ? Colors.red.shade100
-                : Colors.green.shade100,
-            label: (paid < costPrice)
+            backgroundColor:
+                (paid == true) ? Colors.red.shade100 : Colors.green.shade100,
+            label: (paid == true)
                 ? const Icon(
                     Icons.pending_actions_rounded,
                     color: Colors.red,
                   )
                 : const Icon(Icons.verified_rounded, color: Colors.green),
-            // avatar: ,
           ),
         ),
       ),

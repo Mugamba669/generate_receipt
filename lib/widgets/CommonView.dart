@@ -1,11 +1,17 @@
 // ignore_for_file: file_names, must_be_immutable
 
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:generate_rec/Db/receipt.dart';
+import 'package:generate_rec/Db/record.dart';
 import 'package:generate_rec/Global/globals.dart';
+import 'package:generate_rec/pages/debtors.dart';
 import 'package:generate_rec/widgets/receiptCard.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:search_page/search_page.dart';
+import '../pages/addToReceipt.dart';
 import '../pages/receipt.dart';
 import 'Body.dart';
 
@@ -32,19 +38,22 @@ class _CommonViewState extends State<CommonView> {
     Navigator.of(context).pushNamed(route);
   }
 
-  Box<Receipt> searchData = Hive.box<Receipt>(boxName);
-  List<Receipt> searchList = [];
-  List<Receipt> dataList = [];
-
+  Box<Record> searchData = Hive.box<Record>(records);
+  List<Record> searchList = [];
+  List<Record> dataList = [];
+  List<Record> debtors = [];
   @override
   void initState() {
+    debtors = searchData.values
+        .toList(growable: true)
+        .where((element) => (element.totalPaid! < element.totalCostPrice!))
+        .toList(growable: true);
     super.initState();
     dataList = searchData.values.toList();
     for (var element in dataList) {
       searchList.add(element);
       // print("element: ${element.name}");
     }
-    // print('$searchData');
   }
 
   @override
@@ -87,7 +96,7 @@ class _CommonViewState extends State<CommonView> {
               ListTile(
                 leading: const Icon(Icons.dashboard),
                 title: const Text("Dashboard"),
-                onTap: () => routeManager("/dashboard"),
+                onTap: () => routeManager("/"),
               ),
               const Divider(),
               ListTile(
@@ -96,9 +105,16 @@ class _CommonViewState extends State<CommonView> {
                   onTap: () => routeManager("/savedreceipts")),
               const Divider(),
               ListTile(
-                  leading: const Icon(Icons.person),
-                  title: const Text("Debtors"),
-                  onTap: () => routeManager("/debtors"))
+                leading: const Icon(Icons.person),
+                title: const Text("Debtors"),
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Debtors(
+                      rec: debtors,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
@@ -106,9 +122,7 @@ class _CommonViewState extends State<CommonView> {
       fab: widget.showFab == true
           ? FloatingActionButton.extended(
               icon: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/newreceipt');
-              },
+              onPressed: () => showAddReceipt(),
               label: const Text("New receipt"),
             )
           : Container(),
@@ -116,10 +130,32 @@ class _CommonViewState extends State<CommonView> {
     );
   }
 
+  showAddReceipt() {
+    showCupertinoModalPopup(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        context: context,
+        builder: (context) {
+          return Center(
+            child: Padding(
+                padding: EdgeInsets.zero,
+                child: BottomSheet(
+                    elevation: 12,
+                    backgroundColor: Colors.transparent,
+                    onClosing: () {},
+                    builder: (context) {
+                      return Container(
+                        margin: const EdgeInsets.all(10),
+                        child: const AddToReceipt(),
+                      );
+                    })),
+          );
+        });
+  }
+
   showSearchView() {
     showSearch(
       context: context,
-      delegate: SearchPage<Receipt>(
+      delegate: SearchPage<Record>(
         // onQueryUpdate: (s) => print(s),
         items: searchList,
         searchLabel: 'Search here....',
@@ -129,13 +165,9 @@ class _CommonViewState extends State<CommonView> {
         failure: const Center(
           child: Text('No record found :('),
         ),
-        filter: (item) => [
-          item.name,
-          item.pdtName,
-          item.description,
-        ],
+        filter: (item) => [item.owner, item.receiptId],
         builder: (result) => ReceiptCard(
-            paid: result.amount,
+            paid: result.paid,
             tap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
@@ -144,7 +176,7 @@ class _CommonViewState extends State<CommonView> {
                 ),
               );
             },
-            title: result.name),
+            title: result.owner),
       ),
     );
   }

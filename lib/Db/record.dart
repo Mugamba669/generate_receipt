@@ -24,10 +24,10 @@ class Record {
   DateTime? date;
 
   @HiveField(5)
-  List<double>? amount;
+  List<double> amount;
 
   @HiveField(6)
-  List<double>? ttcost;
+  List<double> ttcost;
 
   @HiveField(7)
   double? totalCostPrice;
@@ -39,8 +39,8 @@ class Record {
       {required this.receiptId,
       required this.data,
       required this.owner,
-      this.amount,
-      this.ttcost,
+      required this.amount,
+      required this.ttcost,
       this.date,
       this.paid,
       this.totalCostPrice,

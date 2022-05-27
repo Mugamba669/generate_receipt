@@ -22,8 +22,8 @@ class RecordAdapter extends TypeAdapter<Record> {
           .map((dynamic e) => (e as Map).cast<String, dynamic>())
           .toList(),
       owner: fields[2] as String,
-      amount: (fields[5] as List?)?.cast<double>(),
-      ttcost: (fields[6] as List?)?.cast<double>(),
+      amount: (fields[5] as List).cast<double>(),
+      ttcost: (fields[6] as List).cast<double>(),
       date: fields[4] as DateTime?,
       paid: fields[3] as bool?,
       totalCostPrice: fields[7] as double?,

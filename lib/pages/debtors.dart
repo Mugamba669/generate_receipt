@@ -56,15 +56,16 @@ class _DebtorsState extends State<Debtors> {
                 future: Future.delayed(const Duration(seconds: 8)),
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
-                      ?  Center(
-                          child: Loader(iosStyle: false, text: "Loading debtors...."),
+                      ? Center(
+                          child: Loader(
+                              iosStyle: false, text: "Loading debtors...."),
                         )
                       : ListView.builder(
                           itemBuilder: (context, index) {
                             return ReceiptCard(
-                                    tap: () => showUpdateDialog(index),
-                                    paid: widget.rec![index].paid,
-                                    title: widget.rec![index].owner);
+                                tap: () => showUpdateDialog(index),
+                                paid: widget.rec![index].paid,
+                                title: widget.rec![index].owner);
                           },
                           itemCount: widget.rec!.length,
                         );
@@ -77,7 +78,7 @@ class _DebtorsState extends State<Debtors> {
   showUpdateDialog(int id) {
     double x = (widget.rec![id].totalPaid!);
     double y = (widget.rec![id].totalCostPrice!);
-    double? bal = (y- x);
+    double? bal = (y - x);
     // print(y);
     showDialog(
         context: context,
@@ -129,9 +130,11 @@ class _DebtorsState extends State<Debtors> {
                             text: "Update",
                             press: () {
                               Box<Record> update = Hive.box<Record>(records);
-                              List<Record> u = update.values.toList(growable: true);
-                              for(int i = 0; i < u.length; i++){
-                                if(u[i].receiptId == widget.rec![id].receiptId){
+                              List<Record> u =
+                                  update.values.toList(growable: true);
+                              for (int i = 0; i < u.length; i++) {
+                                if (u[i].receiptId ==
+                                    widget.rec![id].receiptId) {
                                   var old = box.getAt(i);
                                   update.putAt(
                                     i,
@@ -143,6 +146,8 @@ class _DebtorsState extends State<Debtors> {
                                       date: old.date,
                                       data: old.data,
                                       receiptId: old.receiptId,
+                                      amount: old.amount,
+                                      ttcost: old.ttcost,
                                     ),
                                   );
 
@@ -155,8 +160,6 @@ class _DebtorsState extends State<Debtors> {
                                   Navigator.of(context).pushNamed('/');
                                 }
                               }
-
-
                             },
                             width: 100,
                             height: 30,

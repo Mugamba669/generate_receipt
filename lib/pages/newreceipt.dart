@@ -113,9 +113,9 @@ class _NewReceiptState extends State<NewReceipt> {
     );
   }
 
-  double computeCashUsed(List<double>? value) {
+  double computeCashUsed(List<double> value) {
     double result = 0.0;
-    for (int i = 0; i < value!.length; i++) {
+    for (int i = 0; i < value.length; i++) {
       result += value[i];
     }
     return result;
@@ -145,10 +145,10 @@ class _NewReceiptState extends State<NewReceipt> {
       update!.owner = widget.box!.owner;
       update.data.add(col);
       update.receiptId = widget.box!.receiptId;
-      update.amount?.add(ppaid);
+      update.amount.add(ppaid);
       update.date = DateTime.now();
       update.paid = true;
-      update.ttcost?.add(pPrice * pQuantity);
+      update.ttcost.add(pPrice * pQuantity);
       update.totalCostPrice = computeCashUsed(update.ttcost);
       update.totalPaid = computeCashUsed(update.amount);
 
